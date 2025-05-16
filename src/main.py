@@ -1,4 +1,5 @@
 from textnode import TextType, TextNode
+from htmlnode import HTMLnode
 
 def main():
     test = TextNode("test", TextType.LINK, "http://a.com")
