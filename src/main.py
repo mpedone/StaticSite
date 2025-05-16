@@ -1,7 +1,9 @@
-from textnode import TextNode
+from textnode import TextType, TextNode
 
 def main():
-    test = TextNode("test", "LINK", "http://a.com")
+    test = TextNode("test", TextType.LINK, "http://a.com")
+    test2 = TextNode("test", TextType.LINK, "http://ba.com")
     print(test)
+    print(test == test2)
 
 main()
