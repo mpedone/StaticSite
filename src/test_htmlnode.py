@@ -24,7 +24,7 @@ class TestHTMLNode(unittest.TestCase):
         node = HTMLnode(tag, value, children, props)
         test_html = HTMLnode.__repr__(node)
         # self.assertEqual(str(test_output).split("\n")[0], f"Tag: {tag}")
-        self.assertEqual(test_html, "Tag: testTag\nValue: testValue\nchildren: ['testChild1', 'testChild2']\nProps: {'prop1': 'val1', 'prop2': 'val2'}")
+        self.assertEqual(test_html, "HTMLNode(testTag, testValue, ['testChild1', 'testChild2'], {'prop1': 'val1', 'prop2': 'val2'})")
 
 
 if __name__ == "__main__":
