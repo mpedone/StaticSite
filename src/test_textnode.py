@@ -4,6 +4,7 @@ from textnode import TextNode, TextType
 
 
 class TestTextNode(unittest.TestCase):
+    # pass
     def test_eq(self):
         node = TextNode("This is a text node", TextType.BOLD)
         node2 = TextNode("This is a text node", TextType.BOLD)
