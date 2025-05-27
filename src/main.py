@@ -1,4 +1,4 @@
-from textnode import TextType, TextNode
+from textnode import TextType, TextNode, text_node_to_html_node
 from htmlnode import HTMLnode, LeafNode, ParentNode
 
 def main():
@@ -11,18 +11,17 @@ def main():
                 LeafNode(None, "Normal text"),
             ],
     )
-    # node = test.to_html()   
-    # print(node)
 
     try:
-        child_node = LeafNode(None, None)
-        # child_node = ["p", "childe"]
-        parent_node = ParentNode("div", child_node)
-        print(child_node.to_html())
-        print(parent_node.to_html())
+        node = TextNode("test text", TextType.IMAGE, "https://test.com")
+        print(node.url)
+        print(text_node_to_html_node(node))
+        leaf_node = text_node_to_html_node(node)
+        print(leaf_node.to_html())
 
 
     except Exception as e:
         print(e)
 
+            
 main()
