@@ -3,7 +3,7 @@ import unittest
 from extract_links import extract_markdown_images, extract_markdown_links
 from nodesplit import split_nodes_link, split_nodes_image
 from textnode import TextNode, TextType
-'''
+
 class test_extract_funcs(unittest.TestCase):
     def test_one(self):
         matches = extract_markdown_images("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)")
@@ -38,7 +38,7 @@ class test_extract_funcs(unittest.TestCase):
     def test_non_standard(self):
         matches = extract_markdown_links("[file transfer](ftp://hereyougo.com) and [just the domain](sketchy.com)")
         self.assertEqual([("file transfer", "ftp://hereyougo.com"), ("just the domain", "sketchy.com")], matches)
-'''
+
 class test_split_links(unittest.TestCase):
     def test_split_images(self):
         node = TextNode(
@@ -123,6 +123,22 @@ class test_split_links(unittest.TestCase):
         node = TextNode("Nowhere to go!", TextType.TEXT)
         new_nodes = split_nodes_link([node])
         self.assertListEqual([TextNode("Nowhere to go!", TextType.TEXT)], new_nodes)
+    
+    def test_image_first(self):
+        node = TextNode("![DropCapImage](https://i.imgur.com/zjjcJKZ.png)This line starts with an image.", TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual([
+            TextNode("DropCapImage", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+            TextNode("This line starts with an image.", TextType.TEXT)
+        ], new_nodes)
+
+    def test_link_first(self):
+        node = TextNode("[Click here](http://somelink.com) before reading the rest of this sentence.", TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual([
+            TextNode("Click here", TextType.LINK, "http://somelink.com"),
+            TextNode(" before reading the rest of this sentence.", TextType.TEXT)
+        ], new_nodes)
 
 
 

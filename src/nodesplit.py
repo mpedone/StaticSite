@@ -36,7 +36,8 @@ def split_nodes_image(old_nodes):
         matches = extract_markdown_images(node.text)
         for match in matches:
             text_sections = node.text.split(f"![{match[0]}]({match[1]})", 1)
-            new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
+            if text_sections[0] != '':
+                new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
             new_nodes.append(TextNode(match[0], TextType.IMAGE, match[1]))
             node = TextNode(text_sections[1], TextType.TEXT)
         if node.text != '':
@@ -49,21 +50,22 @@ def split_nodes_link(old_nodes):
         matches = extract_markdown_images(node.text)
         for match in matches:
             text_sections = node.text.split(f"[{match[0]}]({match[1]})", 1)
-            new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
+            if text_sections[0] != '':
+                new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
             new_nodes.append(TextNode(match[0], TextType.LINK, match[1]))
             node = TextNode(text_sections[1], TextType.TEXT)
         if node.text != '':
             new_nodes.append(node)
     return new_nodes
 
-node = TextNode(
-    "This is text with a link (https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
-    TextType.TEXT,
-)
+# node = TextNode(
+#     "![DropCapImage](https://i.imgur.com/zjjcJKZ.png)This line starts with an image.",
+#     TextType.TEXT,
+# )
 
-res = split_nodes_link([node])
-for item in res:
-    print(item)
+# res = split_nodes_image([node])
+# for item in res:
+#     print(item)
 
 
 
