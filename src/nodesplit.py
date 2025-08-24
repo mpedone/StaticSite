@@ -6,7 +6,7 @@ class DelimType(Enum):
     TEXT = "text"
     BOLD = "**"
     ITALIC = "_"
-    CODE = "'"
+    CODE = "`"
     LINK = "!["
     IMAGE = "["
 
@@ -47,7 +47,7 @@ def split_nodes_image(old_nodes):
 def split_nodes_link(old_nodes):
     new_nodes = []
     for node in old_nodes:
-        matches = extract_markdown_images(node.text)
+        matches = extract_markdown_links(node.text)
         for match in matches:
             text_sections = node.text.split(f"[{match[0]}]({match[1]})", 1)
             if text_sections[0] != '':
@@ -58,14 +58,32 @@ def split_nodes_link(old_nodes):
             new_nodes.append(node)
     return new_nodes
 
-# node = TextNode(
-#     "![DropCapImage](https://i.imgur.com/zjjcJKZ.png)This line starts with an image.",
-#     TextType.TEXT,
-# )
+def text_to_textnodes(text):
+    node = TextNode(text, TextType.TEXT)
+    # res = []
+    delims = ["**", "_", "'"]
 
-# res = split_nodes_image([node])
-# for item in res:
-#     print(item)
+    # while node is not None:
+    res = split_nodes_delimiter([node], "**", TextType.BOLD)
+    node = res.pop()
+    res2 = split_nodes_delimiter([node], "_", TextType.ITALIC)
+    node = res2.pop()
+    res3 = split_nodes_delimiter([node], "`", TextType.CODE)
+    node = res3.pop()
+    res4 = split_nodes_image([node])
+    node = res4.pop()
+    res5 = split_nodes_link([node])
 
+    res.extend(res2)
+    res.extend(res3)
+    res.extend(res4)
+    res.extend(res5)
 
+    return res
 
+""" text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+node = TextNode(text, TextType.TEXT)
+new_nodes = text_to_textnodes(text)
+# new_nodes = split_nodes_link([node])
+for node in new_nodes:
+    print(node) """
