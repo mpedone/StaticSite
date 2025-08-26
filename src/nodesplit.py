@@ -36,6 +36,8 @@ def split_nodes_image(old_nodes):
         matches = extract_markdown_images(node.text)
         for match in matches:
             text_sections = node.text.split(f"![{match[0]}]({match[1]})", 1)
+            if len(text_sections) != 2:
+                raise ValueError("invalid markdown, image section not closed")
             if text_sections[0] != '':
                 new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
             new_nodes.append(TextNode(match[0], TextType.IMAGE, match[1]))
@@ -50,6 +52,8 @@ def split_nodes_link(old_nodes):
         matches = extract_markdown_links(node.text)
         for match in matches:
             text_sections = node.text.split(f"[{match[0]}]({match[1]})", 1)
+            if len(text_sections) != 2:
+                raise ValueError("invalid markdown, link section not closed")
             if text_sections[0] != '':
                 new_nodes.append(TextNode(text_sections[0], TextType.TEXT))
             new_nodes.append(TextNode(match[0], TextType.LINK, match[1]))
@@ -60,10 +64,7 @@ def split_nodes_link(old_nodes):
 
 def text_to_textnodes(text):
     node = TextNode(text, TextType.TEXT)
-    # res = []
-    delims = ["**", "_", "'"]
-
-    # while node is not None:
+    
     res = split_nodes_delimiter([node], "**", TextType.BOLD)
     node = res.pop()
     res2 = split_nodes_delimiter([node], "_", TextType.ITALIC)
@@ -82,8 +83,9 @@ def text_to_textnodes(text):
     return res
 
 """ text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-node = TextNode(text, TextType.TEXT)
+# node = TextNode(text, TextType.TEXT)
 new_nodes = text_to_textnodes(text)
 # new_nodes = split_nodes_link([node])
 for node in new_nodes:
     print(node) """
+
