@@ -13,18 +13,15 @@ def markdown_to_blocks(markdown):
     block = []
     sections = markdown.split("\n\n")
     for section in sections:
-        # print(f"section: {section}")
-        # print(f"len(section): {len(section)}")
         if section != "" and section != "\n":
             block.append(section.strip("\n "))
     return block
-    # return sections
 
 def block_to_block_type(block):
     if re.match(r"#{1,6} .*[^\n]$", block):
         return BlockType.HEADING
     
-    if re.match(r"`{3}.*\n*.*`{3}", block):
+    if re.match(r"`{3}(.*\n*.*)*`{3}", block):
         return BlockType.CODE
     
     if re.match(r"^>", block):
@@ -37,28 +34,13 @@ def block_to_block_type(block):
     
     list_items = block.split("\n")
     if len(re.findall(r"\d. ", block, flags=re.M)) == len(list_items):
-        if list_items[0][0] != 1:
+        if list_items[0][0] != "1":
             return BlockType.PARAGRAPH
-        for i in range(1, len(list_items) + 1):
-            if list_items[i][0] != i:
+        for i in range(len(list_items)):
+            if list_items[i][0] != str(i+1):
                 return BlockType.PARAGRAPH
         return BlockType.ORDERED_LIST
-    
     return BlockType.PARAGRAPH
-
-    
-
-    """ tag = block[0]
-    print(tag)
-    match tag:
-        case BlockType.HEADING.value:
-            return(BlockType.HEADING)
-        case BlockType.UNORDERED_LIST.value:
-            return(BlockType.UNORDERED_LIST)
-        case BlockType.CODE.value:
-            return(BlockType.CODE)
-        case _:
-            return("Normal Paragraph") """
 
 md = """# This is a heading
 
@@ -98,7 +80,17 @@ Then the last line
 
 blocks = markdown_to_blocks(md)
 i = 1
-for block in blocks:
-    # print(f"Block {i} (len: {len(block)}):\n{block}\n")
-    # i += 1
-    print(block_to_block_type(block))
+
+text = """> line 1
+
+line 2"""
+
+print(block_to_block_type(text))
+
+# x = markdown_to_blocks(text)
+
+# bt = []
+# for item in x:
+#     bt.append(block_to_block_type(item).name)
+
+# print(bt)
