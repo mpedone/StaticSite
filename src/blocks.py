@@ -2,12 +2,12 @@ from enum import Enum, auto
 import re
 
 class BlockType(Enum):
-    HEADING = auto()
-    CODE = auto()
-    QUOTE = auto()
-    UNORDERED_LIST = auto()
-    ORDERED_LIST = auto()
-    PARAGRAPH = auto()
+    HEADING = "h"
+    CODE = "pre"
+    QUOTE = "blockquote"
+    UNORDERED_LIST = "ul"
+    ORDERED_LIST = "ol"
+    PARAGRAPH = "p"
 
 def markdown_to_blocks(markdown):
     block = []
