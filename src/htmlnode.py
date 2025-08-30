@@ -37,7 +37,7 @@ class LeafNode(HTMLnode):
 class ParentNode(HTMLnode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
-        self.children = [children]
+        self.children = children
     
     def to_html(self):
         if self.tag is None:
@@ -46,16 +46,13 @@ class ParentNode(HTMLnode):
             raise ValueError("node must have a value")
         return f"<{self.tag}{HTMLnode.props_to_html(self.props)}>{ParentNode.children_format(self.children)}</{self.tag}>"
     
-    # My original method, doesn't take nested lists into account       
-    # def children_format(self):
-    #     formatted_code = ""
-    #     if len(self) == 0:
-    #         return formatted_code
-    #     formatted_code += self[0].to_html()
-    #     return formatted_code + ParentNode.children_format(self[1:])
-
-    # '''
-    # My attempt at taking nested lists into account (doesn't seem to work)
+    """ My original method, doesn't take nested lists into account       
+    def children_format(self):
+        formatted_code = ""
+        if len(self) == 0:
+            return formatted_code
+        formatted_code += self[0].to_html()
+        return formatted_code + ParentNode.children_format(self[1:]) """
 
     def children_format(self):
         formatted_code = ""

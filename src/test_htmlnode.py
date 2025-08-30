@@ -84,8 +84,8 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_list_argument2(self):
         child_node1 = [LeafNode("span", "Child", {"href": "https://test.com", "target": "_blank"})]
         child_node2 = LeafNode("span", "Child", {"href": "https://test.com", "target": "_blank"})
-        parent_node1 = ParentNode("div", child_node1)
-        parent_node2 = ParentNode("div", child_node2)
+        parent_node1 = ParentNode("div", [child_node1])
+        parent_node2 = ParentNode("div", [child_node2])
         self.assertEqual(parent_node1.to_html(), parent_node2.to_html())
 
     def test_to_html_nest_list(self):
@@ -107,7 +107,7 @@ class TestHTMLNode(unittest.TestCase):
         greatgrandchild_1 = ParentNode("p", [descendant, descendant_wrapper])
         greatgrandchild_2 = LeafNode("p", "Another paragraph")
         grandchild_3 = ParentNode("h1", [greatgrandchild_1, greatgrandchild_2])
-        child_2 = ParentNode("div", grandchild_3, {"class": "main"})
+        child_2 = ParentNode("div", [grandchild_3], {"class": "main"})
         grandchild_1 = LeafNode("h1", "title")
         grandchild_2 = LeafNode("h2", "subtitle")
         child_1 = ParentNode("header", [grandchild_1, grandchild_2])
@@ -119,7 +119,7 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_to_html_value_error(self):
         child_node = LeafNode(None, None)
-        parent_node = ParentNode("div", child_node)
+        parent_node = ParentNode("div", [child_node])
         with self.assertRaises(ValueError):
             parent_node.to_html()
 

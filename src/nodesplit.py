@@ -1,6 +1,8 @@
 from textnode import TextType, TextNode
 from extract_links import extract_markdown_images, extract_markdown_links
 from enum import Enum
+from htmlnode import HTMLnode, ParentNode
+from textnode import text_node_to_html_node
 
 class DelimType(Enum):
     TEXT = "text"
@@ -82,10 +84,14 @@ def text_to_textnodes(text):
 
     return res
 
-""" text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
 # node = TextNode(text, TextType.TEXT)
 new_nodes = text_to_textnodes(text)
 # new_nodes = split_nodes_link([node])
-for node in new_nodes:
-    print(node) """
-
+# for node in new_nodes:
+#     print(node)
+test = HTMLnode(TextType.TEXT, text)
+new_nodes = text_to_textnodes(text)
+parent = ParentNode("p", new_nodes)
+# parent_html = parent.to_html()
+# print(parent_html)
