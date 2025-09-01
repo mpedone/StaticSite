@@ -3,28 +3,31 @@ from htmlnode import HTMLnode, LeafNode, ParentNode
 from nodesplit import text_to_textnodes, DelimType
 from blocks import markdown_to_blocks, block_to_block_type, BlockType
 from enum import Enum
+import os
+import shutil
+
+def folder_generation(source, destination):
+    if not os.path.exists(destination):
+        os.mkdir(destination)
+    elif os.path.isfile(destination):
+        raise Exception("Please enter a folder as destination.")
+    elif os.path.exists(destination):
+        files_list = os.listdir(destination)
+        for file in files_list:
+            new_path = os.path.join(destination, file)
+            os.remove(new_path)
+    
+    # shutil.copytree(source, destination)
+    files_to_copy = os.listdir(source)
+    for file in files_to_copy:
+        shutil.copyfile
 
 
 def main():
-    test = "```This is a paragraph with a bold word and an italic word.```"
 
     try:
-        block_type = block_to_block_type(test)
-        code_block = TextNode(test, TextType.CODE)
-        # html_node = text_node_to_html_node(code_block)
-        # parent = ParentNode(block_type.value, [html_node])
-        if block_type != BlockType.CODE:
-            sub_blocks = text_to_textnodes(test)
-            leaf_blocks = []
-            for sub in sub_blocks:
-                leaf_blocks.append(text_node_to_html_node(sub))
-            html_node = ParentNode(block_type.value, leaf_blocks)
-        node = text_node_to_html_node(code_block)
-        html_node = ParentNode(block_type.value, [node])
-
-        print(block_type.value)
-        # print(parent.to_html())
-
+        print("this is the main file")
+        copy_to_folder("test")
 
     except Exception as e:
         print(e)
