@@ -65,5 +65,5 @@ This is another paragraph with _italic_ text and `code` here
 
 """
 
-node = markdown_to_html_node(md)
+# node = markdown_to_html_node(md)
 # print(node.to_html())

@@ -1,4 +1,8 @@
 import re
+import os
+from markdown_to_html_node import markdown_to_html_node
+from htmlnode import HTMLnode, ParentNode, LeafNode
+
 
 def extract_title(markdown):
     header = re.search(r"^# (.*)", markdown)
@@ -7,40 +11,27 @@ def extract_title(markdown):
     title = header.group(1)
     return title
 
-try:
-    print(extract_title("# hello"))
-except Exception as e:
-    print(e)
-
-import unittest
-
-
-class test_generate(unittest.TestCase):
-    def test_one(self):
-        md = "# Hello"
-        title = extract_title(md)
-        self.assertEqual(title, "Hello")
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}.")
+    with open(from_path, "r") as f:
+        markdown = f.read()
+    with open(template_path, "r") as t:
+        template = t.read()
     
-    def test_two(self):
-        with self.assertRaises(Exception):
-            extract_title("## Hello")
-        with self.assertRaises(Exception):
-            extract_title("### Hello")
-        with self.assertRaises(Exception):
-            extract_title("#### Hello")
-        with self.assertRaises(Exception):
-            extract_title("##### Hello")
-        with self.assertRaises(Exception):
-            extract_title("###### Hello")
-        with self.assertRaises(Exception):
-            extract_title(" Hello")
-        with self.assertRaises(Exception):
-            extract_title("Hello")
-        with self.assertRaises(Exception):
-            extract_title("")
-    
-    def test_three(self):
-        self.assertEqual(extract_title("# "), "")
+    html_nodes = markdown_to_html_node(markdown)
+    html_code = html_nodes.to_html()
 
-if __name__ == "__main__":
-    unittest.main()
+    title = extract_title(markdown)
+
+    titled_page = re.sub(r"{{ Title }}", title, template)
+    full_page = re.sub(r"{{ Content }}", html_code, titled_page)
+
+    if not os.path.exists(dest_path):
+        os.mkdir(dest_path)
+
+    dest_file_path = os.path.join(dest_path, "index.html")
+
+    with open(dest_file_path, "w") as f:
+        f.write(full_page)
+
+# generate_page("./content/index.md", "./template.html", "./static")
