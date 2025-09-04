@@ -27,7 +27,7 @@ def generate_page(from_path, template_path, dest_path):
     full_page = re.sub(r"{{ Content }}", html_code, titled_page)
 
     if not os.path.exists(dest_path):
-        os.mkdir(dest_path)
+        os.makedirs(dest_path, exist_ok=True)
 
     dest_file_path = os.path.join(dest_path, "index.html")
 
@@ -35,3 +35,14 @@ def generate_page(from_path, template_path, dest_path):
         f.write(full_page)
 
 # generate_page("./content/index.md", "./template.html", "./static")
+
+"""
+If 'from_path' is a directory, list contents
+loop through contents
+if file is a directory, add to 'from_path' and call function again
+
+for files:
+if file is a file, get the filename: 
+    os.path.splitext(os.path.basename(filepath))[0]
+append ".html" as the new filename.
+"""
