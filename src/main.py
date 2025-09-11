@@ -1,5 +1,5 @@
 from copy_static import copy_to_folder
-from generate import generate_page
+from generate import generate_page_recursively
 import os
 # import shutil
 
@@ -15,7 +15,7 @@ def main():
         template_path = "./template.html"
         dest_path = "./public"
 
-        generate_page(from_path, template_path, dest_path)
+        generate_page_recursively(from_path, template_path, dest_path)
 
     except Exception as e:
         print(e)
