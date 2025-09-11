@@ -88,11 +88,13 @@ def text_to_textnodes(text):
     return res
 
 # text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-# node = TextNode(text, TextType.TEXT)
+text = "_bleh_"
+node = TextNode(text, TextType.TEXT)
 # new_nodes = text_to_textnodes(text)
+new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
 # new_nodes = split_nodes_link([node])
-# for node in new_nodes:
-#     print(node)
+for node in new_nodes:
+    print(node)
 # test = HTMLnode(TextType.TEXT, text)
 # new_nodes = text_to_textnodes(text)
 # parent = ParentNode("p", new_nodes)
