@@ -70,28 +70,31 @@ def text_to_textnodes(text):
     res = split_nodes_delimiter([node], "**", TextType.BOLD)
     node = res.pop()
     res2 = split_nodes_delimiter([node], "_", TextType.ITALIC)
-    node = res2.pop()
+    if res2:
+        node = res2.pop()
+        res.extend(res2)
     res3 = split_nodes_delimiter([node], "`", TextType.CODE)
-    node = res3.pop()
+    if res3:
+        node = res3.pop()
+        res.extend(res3)
     res4 = split_nodes_image([node])
-    node = res4.pop()
+    if res4:
+        node = res4.pop()
+        res.extend(res4)
     res5 = split_nodes_link([node])
-
-    res.extend(res2)
-    res.extend(res3)
-    res.extend(res4)
-    res.extend(res5)
+    if res5:
+        res.extend(res5)
 
     return res
 
-text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+# text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
 # node = TextNode(text, TextType.TEXT)
-new_nodes = text_to_textnodes(text)
+# new_nodes = text_to_textnodes(text)
 # new_nodes = split_nodes_link([node])
 # for node in new_nodes:
 #     print(node)
-test = HTMLnode(TextType.TEXT, text)
-new_nodes = text_to_textnodes(text)
-parent = ParentNode("p", new_nodes)
+# test = HTMLnode(TextType.TEXT, text)
+# new_nodes = text_to_textnodes(text)
+# parent = ParentNode("p", new_nodes)
 # parent_html = parent.to_html()
 # print(parent_html)

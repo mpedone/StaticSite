@@ -9,6 +9,7 @@ def markdown_to_html_node(markdown):
     nodes = []
     for item in blocks:
         block_type = block_to_block_type(item)
+        # print(block_type.value)
 
         if block_type.value == "h":
             level = item.split(" ", 1)[0].count("#")
@@ -55,13 +56,16 @@ def block_to_html(block, block_type):
 
 
 # md = "# test\n\nHere's some **bold** text\n\n1. item\n2. itme\n3. ietm\n\n```code\nblock```"
-md = """
-This is **bolded** paragraph
-text in a p
+"""md = 
+# Contact the Author
 
-> tag here
+[< Back Home](/)
 
-This is another paragraph with _italic_ text and `code` here
+Give me a call anytime to chat about Tolkien!
+
+`555-555-5555`
+
+a**bold**
 
 """
 

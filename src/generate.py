@@ -13,36 +13,34 @@ def extract_title(markdown):
 
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}.")
-    with open(from_path, "r") as f:
-        markdown = f.read()
-    with open(template_path, "r") as t:
-        template = t.read()
-    
-    html_nodes = markdown_to_html_node(markdown)
-    html_code = html_nodes.to_html()
 
-    title = extract_title(markdown)
+    # if not os.path.isfile(from_path):
+    files_list = os.listdir(from_path)
+    for file in files_list:
+        new_from_path = os.path.join(from_path, file)
+        if not os.path.isfile(new_from_path):
+            new_dest_path = os.path.join(dest_path, file)
+            generate_page(new_from_path, template_path, new_dest_path)
+        else:
+            with open(new_from_path, "r") as f:
+                markdown = f.read()
+                filename = file.replace(".md", ".html")
+            with open(template_path, "r") as t:
+                template = t.read()
+            html_nodes = markdown_to_html_node(markdown)
+            html_code = html_nodes.to_html()
 
-    titled_page = re.sub(r"{{ Title }}", title, template)
-    full_page = re.sub(r"{{ Content }}", html_code, titled_page)
+            title = extract_title(markdown)
 
-    if not os.path.exists(dest_path):
-        os.makedirs(dest_path, exist_ok=True)
+            titled_page = re.sub(r"{{ Title }}", title, template)
+            full_page = re.sub(r"{{ Content }}", html_code, titled_page)
 
-    dest_file_path = os.path.join(dest_path, "index.html")
+            if not os.path.exists(dest_path):
+                os.makedirs(dest_path, exist_ok=True)
 
-    with open(dest_file_path, "w") as f:
-        f.write(full_page)
+            dest_file_path = os.path.join(dest_path, filename)
+
+            with open(dest_file_path, "w") as f:
+                f.write(full_page)
 
 # generate_page("./content/index.md", "./template.html", "./static")
-
-"""
-If 'from_path' is a directory, list contents
-loop through contents
-if file is a directory, add to 'from_path' and call function again
-
-for files:
-if file is a file, get the filename: 
-    os.path.splitext(os.path.basename(filepath))[0]
-append ".html" as the new filename.
-"""
