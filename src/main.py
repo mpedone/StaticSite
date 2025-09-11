@@ -9,12 +9,15 @@ public_dir = "./public"
 def main():
 
     try:
+        print("Deleting public directory...")
+        print("Copying static files to public directory...")
         copy_to_folder(static_dir, public_dir)
 
         from_path = "./content"
         template_path = "./template.html"
         dest_path = "./public"
 
+        print("Generating content...")
         generate_page_recursively(from_path, template_path, dest_path)
 
     except Exception as e:

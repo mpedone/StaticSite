@@ -24,7 +24,7 @@ def generate_page_recursively(from_path, template_path, dest_path):
             generate_page_recursively(new_from_path, template_path, new_dest_path)
 
 def generate_page(from_path, template_path, dest_path):
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}.")
+    print(f"* {from_path} --> {dest_path} <-- {template_path}.")
 
     with open(from_path, "r") as f:
         markdown = f.read()
